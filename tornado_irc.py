@@ -28,12 +28,15 @@ class IRCConn(object):
         self._state = IRC_DISCONNECTED
 
     def on_connect(self):
+        """Callback that is invoked after connection"""
         pass
 
     def on_chanmsg(self, channel, username, message):
+        """Callback that is invoked on every channel message"""
         pass
 
     def on_privmsg(self, username, message):
+        """Callback taht is invoked on every private message"""
         pass
 
     def connect(self, host, port, do_ssl=False, password=None):
@@ -95,6 +98,8 @@ class IRCConn(object):
         self.conn.read_until("\n", self._handle_data)
 
     def join(self, channel):
+        if not channel.startswith("#"):
+            channel = "#" + channel
         self._write("JOIN " + channel)
 
     def chanmsg(self, channel, message):
@@ -107,5 +112,6 @@ class IRCConn(object):
     def quit(self, message, callback=None):
         def after_quit(*args, **kwargs):
             self.conn.close()
-            callback()
+            if callback:
+                callback()
         self._write("QUIT :%s" % message, callback=after_quit)
