@@ -76,7 +76,7 @@ class IRCConn(object):
             self._state = IRC_NICK
         elif self._state == IRC_NICK:
             self._write("NICK %s" % self.nickname)
-            self._write("USER %s 8 *  :%s" % (self.nickname, self.full_name)
+            self._write("USER %s 8 *  :%s" % (self.nickname, self.full_name))
             self._state = IRC_CONNECTING
         elif self._state == IRC_CONNECTING:
             self.on_connect()
